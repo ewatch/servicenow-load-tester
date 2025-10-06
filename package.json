@@ -1,0 +1,23 @@
+{
+  "name": "servicenow-load-tester",
+  "version": "1.0.0",
+  "description": "Load testing tool for ServiceNow with browser automation and API testing",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "servicenow",
+    "load-testing",
+    "playwright",
+    "automation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "playwright": "^1.40.0",
+    "js-yaml": "^4.1.0"
+  }
+}

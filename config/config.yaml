@@ -1,0 +1,91 @@
+# ServiceNow Load Tester Configuration
+
+servicenow:
+  # Your ServiceNow instance URL (without trailing slash)
+  instance_url: "https://dev217805.service-now.com"
+  
+  # Admin credentials for user provisioning
+  admin:
+    username: "admin"
+    password: "UGZ0W$3cmdy+"
+
+# Load test configuration
+load_test:
+  # Total number of users to create and use for testing
+  total_users: 20
+  
+  # Number of browser-based users (remaining will be API users)
+  browser_users: 10
+  
+  # User prefix for created test users
+  user_prefix: "loadtest_user"
+  
+  # Duration to run the test (in seconds, 0 = run indefinitely)
+  duration: 300
+
+# Browser session configuration
+browser:
+  # Run in headless mode
+  headless: true
+  
+  # Delay between actions in milliseconds (simulates human behavior)
+  action_delay_min: 1000
+  action_delay_max: 3000
+  
+  # Browser navigation sequence
+  scenarios:
+    - name: "incident_list"
+      path: "/now/nav/ui/classic/params/target/incident_list.do"
+      wait_for: "table"
+    
+    - name: "incident_form"
+      path: "/now/nav/ui/classic/params/target/incident.do"
+      wait_for: "form"
+
+    - name: "cmdb_list"
+      path: "/now/nav/ui/classic/params/target/cmdb_list.do"
+      wait_for: "table"
+
+    - name: "cmdb_form"
+      path: "/now/nav/ui/classic/params/target/cmdb.do"
+      wait_for: "form"
+    
+    - name: "system_logs"
+      path: "/now/nav/ui/classic/params/target/syslog_list.do"
+      wait_for: "table"
+
+# API session configuration
+api:
+  # API endpoints for long-running calls
+  endpoints:
+    - name: "incident_query"
+      path: "/api/now/table/incident"
+      method: "GET"
+      query_params:
+        sysparm_limit: 1000
+        sysparm_query: "active=true"
+    
+    - name: "user_query"
+      path: "/api/now/table/sys_user"
+      method: "GET"
+      query_params:
+        sysparm_limit: 500
+    
+    - name: "cmdb_query"
+      path: "/api/now/table/cmdb_ci"
+      method: "GET"
+      query_params:
+        sysparm_limit: 3000
+  
+  # Delay between API calls in milliseconds
+  call_delay_min: 2000
+  call_delay_max: 5000
+
+# Logging configuration
+logging:
+  # Log level: 'info', 'debug', 'error'
+  level: "info"
+  
+  # Log to file
+  file_enabled: false
+  file_path: "./logs/load-test.log"
